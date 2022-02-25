@@ -15,9 +15,66 @@ export default class NewBill {
     this.billId = null
     new Logout({ document, localStorage, onNavigate })
   }
+
+  loadMimeType (header) {
+    switch (header) {
+      case "89504e47":
+        return true
+      case "ffd8ffe0":
+      case "ffd8ffe1":
+      case "ffd8ffe2":
+      case "ffd8ffe3":
+      case "ffd8ffe8":
+          return true
+      default:
+          return false
+    }
+    
+  }
+
   handleChangeFile = e => {
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    //test
+//     console.log('handle fonction')
+    const blob = file
+    const fileReader = new FileReader();
+    fileReader.onloadend = (e) => {
+  const arr = (new Uint8Array(e.target.result)).subarray(0, 4);
+  let header = "";
+  for(let i = 0; i < arr.length; i++) {
+     header += arr[i].toString(16);
+  }
+  //console.log(header);
+  if (!this.loadMimeType(header)){
+    this.document.querySelector(`input[data-testid="file"]`).value = null
+       return alert('fichier non valide (jpg jpeg png)')
+  }
+
+};
+fileReader.readAsArrayBuffer(blob);
+//     console.log('blob', blob)
+//     var reader = new FileReader()
+//     reader.addEventListener('loadend', () => {
+//       // reader.result contains the contents of blob as a typed array
+//    })
+//    var a = reader.readAsArrayBuffer(blob)
+//     console.log('resder', a)
+//     fileReader.onprogress = function(e) {
+//       var arr = (new Uint8Array(e.target.result)).subarray(0, 4);
+//       var header = "";
+//       for(var i = 0; i < arr.length; i++) {
+//         header += arr[i].toString(16);
+//       }
+//     console.log('header',header);
+
+//   // Check the file signature against known types
+
+// }
+// fileReader.readAsArrayBuffer(file);
+// console.log('filreader',fileReader.result)
+
+    //test
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
     const formData = new FormData()
