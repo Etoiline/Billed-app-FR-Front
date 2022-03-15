@@ -103,7 +103,7 @@ describe("Given I am connected as an employee", () => {
         const onNavigate = (pathname) => {window.onNavigate(pathname)}
         document.body.innerHTML = NewBillUI()
       //   //console.log(document.body.innerHTML)
-      localStorageMock.getItem = jest.fn()
+      //localStorageMock.getItem = jest.fn()
         const newBill = new NewBill({ document, onNavigate, store:storeMock, localStorage:localStorageMock })
         newBill.handleChangeFile = jest.fn()
         const inputFile = screen.getByTestId("file")
