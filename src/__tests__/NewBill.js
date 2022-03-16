@@ -38,12 +38,9 @@ describe("Given I am connected as an employee", () => {
       expect(form.length).toEqual(9)
     })
 
-    describe("When I upload a wrong file", () => {
-      test ("A pop up should be open", () => {
-        // const response = await fetch('./FileTest.txt')
-        // console.log(response)
+    describe("When I upload a file", () => {
+      test ("It is a correct png file, the pop up shouldn't be open", () => {
         const response = fs.readFileSync(__dirname+'/LogoOC.png')
-        //console.log(...response)
         const alertMock = jest.fn()
         Object.defineProperty(window, 'alert', { value: alertMock })
         Object.defineProperty(window, 'localStorage', { value: localStorageMock })
@@ -51,37 +48,29 @@ describe("Given I am connected as an employee", () => {
            email: 'employee@test.tld',
            type: 'employee'
          }))
-       // window.localStorage.setItem('user', JSON.stringify({
-      //    email: 'employee@test.tld'
-       // }))
         const root = document.createElement("div")
         root.setAttribute("id", "root")
         document.body.append(root)
         router()
         const onNavigate = (pathname) => {window.onNavigate(pathname)}
         document.body.innerHTML = NewBillUI()
-      //   //console.log(document.body.innerHTML)
         const newBill = new NewBill({ document, onNavigate, store:storeMock, localStorage:localStorageMock })
         newBill.handleChangeFile = jest.fn()
         const inputFile = screen.getByTestId("file")
-        console.log(inputFile)
-       // inputFile.addEventListener("change", newBill.handleChangeFile)
+        //console.log(inputFile)
        const fileTest = new File([response], 'logo.png', {
         type: "image/png",
       })
         fireEvent.change(inputFile, {
             target: {files:[fileTest]}
         })
-        // await new Promise(()=>setTimeout(() => {
-          
-        // }, 1000))
        setTimeout(() => {
-      expect(alertMock).toHaveBeenCalled()
+      expect(alertMock).not.toHaveBeenCalled()
       expect(localStorageMock.getItem).toHaveBeenCalled()
      }, 1000);
 
       })
-      test ("A pop up should be open", () => {
+      test ("It is a correct jpg file, the pop up shouldn't be open", () => {
         // const response = await fetch('./FileTest.txt')
         // console.log(response)
         const response = fs.readFileSync(__dirname+'/logojpg.jpeg')
@@ -93,21 +82,16 @@ describe("Given I am connected as an employee", () => {
            email: 'employee@test.tld',
            type: 'employee'
          }))
-       // window.localStorage.setItem('user', JSON.stringify({
-      //    email: 'employee@test.tld'
-       // }))
         const root = document.createElement("div")
         root.setAttribute("id", "root")
         document.body.append(root)
         router()
         const onNavigate = (pathname) => {window.onNavigate(pathname)}
         document.body.innerHTML = NewBillUI()
-      //   //console.log(document.body.innerHTML)
-      //localStorageMock.getItem = jest.fn()
         const newBill = new NewBill({ document, onNavigate, store:storeMock, localStorage:localStorageMock })
         newBill.handleChangeFile = jest.fn()
         const inputFile = screen.getByTestId("file")
-        console.log(inputFile)
+        //console.log(inputFile)
        // inputFile.addEventListener("change", newBill.handleChangeFile)
        const fileTest = new File([response], 'logo.jpeg', {
         type: "image/jpg",
@@ -115,16 +99,13 @@ describe("Given I am connected as an employee", () => {
         fireEvent.change(inputFile, {
             target: {files:[fileTest]}
         })
-        // await new Promise(()=>setTimeout(() => {
-          
-        // }, 1000))
        setTimeout(() => {
-      expect(alertMock).toHaveBeenCalled()
+      expect(alertMock).not.toHaveBeenCalled()
       expect(localStorageMock.getItem).toHaveBeenCalled()
      }, 1000);
 
       })
-      test ("A pop up should be open",  () => {
+      test ("It is a uncorrect txt file, the pop up should be open",  () => {
         const response = fs.readFileSync(__dirname+'/FileTest.txt')
         //console.log(...response)
         const alertMock = jest.fn((message)=> console.log(message))
@@ -134,9 +115,6 @@ describe("Given I am connected as an employee", () => {
            email: 'employee@test.tld',
            type: 'employee'
          }))
-       // window.localStorage.setItem('user', JSON.stringify({
-      //    email: 'employee@test.tld'
-       // }))
         const root = document.createElement("div")
         root.setAttribute("id", "root")
         document.body.append(root)
@@ -147,7 +125,7 @@ describe("Given I am connected as an employee", () => {
         const newBill = new NewBill({ document, onNavigate, store:storeMock, localStorage:localStorageMock })
         newBill.handleChangeFile = jest.fn()
         const inputFile = screen.getByTestId("file")
-        console.log(inputFile)
+        //console.log(inputFile)
        const fileTest = new File([response], 'test.txt', {
         type: "text/plain",
       })
@@ -157,9 +135,10 @@ describe("Given I am connected as an employee", () => {
         
         setTimeout(() => {
           expect(alertMock).toHaveBeenCalled()
+          console.log("except")
         }, 1000);
       
-
+        
       })
 
     })
@@ -170,7 +149,7 @@ describe("Given I am connected as an employee", () => {
         root.setAttribute("id", "root")
         document.body.append(root)
         
-        const onNavigate = (pathname) => {window.onNavigate(pathname)}
+        const onNavigate = jest.fn()
         Object.defineProperty(window, 'localStorage', { value: localStorageMock })
         window.localStorage.setItem('user', JSON.stringify({
            email: 'employee@test.tld',
@@ -194,7 +173,7 @@ describe("Given I am connected as an employee", () => {
         newBill.fileName = 'LogoOC.png'
         //formBill.addEventListener('click', newBill.handleSubmit)
         fireEvent.submit(formBill)
-        expect(localStorageMock.getItem).toHaveBeenCalled()
+        expect(onNavigate).toHaveBeenCalled()
       })
     })
 
@@ -210,8 +189,7 @@ describe("Given I am connected as an employee", () => {
            email: 'employee@test.tld',
            type: 'employee'
          }))
-         router()
-        const onNavigate = (pathname) => {window.onNavigate(pathname)}
+         const onNavigate = (pathname) => {document.body.innerHTML = ROUTES({pathname})}
         document.body.innerHTML = NewBillUI()
         const newBill = new NewBill({ document, onNavigate, store, localStorage:localStorageMock })
         const wrongMimeTypeResult = newBill.loadMimeType(wrongMimeType)
@@ -231,8 +209,7 @@ describe("Given I am connected as an employee", () => {
            email: 'employee@test.tld',
            type: 'employee'
          }))
-         router()
-        const onNavigate = (pathname) => {window.onNavigate(pathname)}
+         const onNavigate = (pathname) => {document.body.innerHTML = ROUTES({pathname})}
         document.body.innerHTML = NewBillUI()
         const newBill = new NewBill({ document, onNavigate, store, localStorage:localStorageMock })
         const correctMimeTypeResult = newBill.loadMimeType(correctMimeType)
@@ -252,8 +229,7 @@ describe("Given I am connected as an employee", () => {
            email: 'employee@test.tld',
            type: 'employee'
          }))
-         router()
-        const onNavigate = (pathname) => {window.onNavigate(pathname)}
+        const onNavigate = (pathname) => {document.body.innerHTML = ROUTES({pathname})}
         document.body.innerHTML = NewBillUI()
         const newBill = new NewBill({ document, onNavigate, store, localStorage:localStorageMock })
         const correctMimeTypeResult = newBill.loadMimeType(correctMimeType)

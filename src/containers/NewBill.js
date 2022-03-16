@@ -47,7 +47,7 @@ export default class NewBill {
   }
 
   handleChangeFile = e => {
-    console.log("e", e.target.result)
+    //console.log("e", e.target.result)
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
 
@@ -69,7 +69,7 @@ export default class NewBill {
         return ;
       }
       else {
-        console.log('else')
+        //console.log('else')
         const filePath = e.target.value.split(/\\/g)
         const fileName = filePath[filePath.length-1]
         const formData = new FormData()
@@ -99,7 +99,7 @@ export default class NewBill {
 
   handleSubmit = e => {
     e.preventDefault()
-    console.log("prevent default")
+    //console.log("prevent default")
     //console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
     const bill = {
