@@ -16,20 +16,6 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate })
   }
 
-//   headerFile(file) {
-//     const blob = file
-//     const fileReader = new FileReader();
-//     fileReader.onloadend = (e) => {
-//     const arr = (new Uint8Array(e.target.result)).subarray(0, 4);
-//     let header = "";
-//     for(let i = 0; i < arr.length; i++) {
-//       header += arr[i].toString(16);
-//     }
-
-//   }
-//   return header
-// }
-
   loadMimeType (header) {
     switch (header) {
       case "89504e47":
@@ -50,8 +36,6 @@ export default class NewBill {
     //console.log("e", e.target.result)
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-
-    
     const blob = file
     const fileReader = new FileReader()
     fileReader.onloadend = (e) => {
@@ -61,15 +45,12 @@ export default class NewBill {
       for(let i = 0; i < arr.length; i++) {
         header += arr[i].toString(16)
       }
-      //console.log(this.loadMimeType(header))
       if (!this.loadMimeType(header)){
         this.document.querySelector(`input[data-testid="file"]`).value = null
-        //console.log(alert)
         alert('fichier non valide (jpg jpeg png)')
         return ;
       }
       else {
-        //console.log('else')
         const filePath = e.target.value.split(/\\/g)
         const fileName = filePath[filePath.length-1]
         const formData = new FormData()
@@ -99,8 +80,6 @@ export default class NewBill {
 
   handleSubmit = e => {
     e.preventDefault()
-    //console.log("prevent default")
-    //console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
     const bill = {
       email,
@@ -115,8 +94,7 @@ export default class NewBill {
       fileName: this.fileName,
       status: 'pending'
     }
-    // not need to cover this function by tests
-  /* istanbul ignore next */
+
     this.updateBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
   }
@@ -124,6 +102,7 @@ export default class NewBill {
   // not need to cover this function by tests
   /* istanbul ignore next */
   updateBill = (bill) => {
+    //console.log(console.error)
     if (this.store) {
       this.store
       .bills()
