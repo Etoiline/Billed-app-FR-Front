@@ -179,7 +179,7 @@ describe("Given I am connected as an employee", () => {
   })
 
   //test intégration POST
-  describe("When an error occurs on API", () => {
+  describe("When we try to use API", () => {
     beforeEach(() => {
       jest.spyOn(storeMock, "bills")
       storeMock.bills.mockImplementationOnce(() => {
@@ -197,7 +197,7 @@ describe("Given I am connected as an employee", () => {
       document.body.appendChild(root)
       router()
     })
-    test("fetches bills from an API and fails with 400 message error", async () => {
+    test("API return correct bill", async () => {
       document.body.innerHTML = NewBillUI()
       const onNavigate = (pathname) => {document.body.innerHTML = ROUTES({pathname})}
       const newBill = new NewBill({ document, onNavigate, store:storeMock, localStorage:localStorageMock })
@@ -216,7 +216,7 @@ describe("Given I am connected as an employee", () => {
       fireEvent.submit(formBill)
       expect(screen.getByTestId('btn-new-bill')).toBeTruthy()
     })
-    test("fetches bills from an API and fails with 400 message error", async () => {
+    test("an error occurs on API and fails with 400 message error", async () => {
       const consoleErrorMock = jest.fn()
       Object.defineProperty(console, 'error', {value:consoleErrorMock})
       document.body.innerHTML = NewBillUI()
