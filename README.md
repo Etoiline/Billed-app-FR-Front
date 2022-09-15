@@ -1,3 +1,21 @@
+# Billed
+Débuggez et testez un SaaS RH
+
+
+## Éléments fournis
+- Le backend de l'application
+- Le frontend de l'application
+
+
+## Cahier des charges
+- Fixer les bugs déjà identifiés
+- Tester et debugger le parcours employé
+- Débugger le parcours admin
+- Ajouter des tests unitaires et d’intégration pour les fichiers Bills et NewBill
+- Assurer un taux de couverture global des containers de 80% minimum (tests unitaires ET tests d’intégration)
+- Rédiger un plan de test End-to-End (E2E) sur le parcours employé
+
+
 
 ## L'architecture du projet :
 Ce projet, dit frontend, est connecté à un service API backend que vous devez aussi lancer en local.
